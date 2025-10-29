@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validator Dashboard Test</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f7fa;
+        }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .dashboard-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .card-header h2 {
+            margin: 0;
+            font-size: 18px;
+            color: #333;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+        .stat-number {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        .stat-label {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .data-table th,
+        .data-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        .data-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        .btn {
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            border: none;
+        }
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+        .activity-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .activity-item {
+            display: flex;
+            gap: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+        .activity-icon {
+            font-size: 20px;
+        }
+        .activity-content {
+            flex: 1;
+        }
+        .activity-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .activity-description {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        .activity-time {
+            color: #95a5a6;
+            font-size: 12px;
+        }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        .metric-item {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+        .metric-label {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+        }
+        .metric-value {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .metric-unit {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        .metric-target {
+            font-size: 12px;
+            color: #95a5a6;
+            margin-bottom: 10px;
+        }
+        .progress-bar {
+            height: 6px;
+            background: #ecf0f1;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .progress-bar div {
+            height: 100%;
+            background: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <main class="dashboard validator-dashboard">
+        <div class="container">
+            <div class="dashboard-header">
+                <h1>Doğrulayıcı Paneli</h1>
+            </div>
+
+            <div class="dashboard-grid">
+                <!-- Statistics -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h2>Doğrulama İstatistikleri</h2>
+                    </div>
+                    <div class="card-content">
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-number" id="total-stats">-</div>
+                                <div class="stat-label">Toplam Doğrulama</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="approved-stats">-</div>
+                                <div class="stat-label">Onaylanan</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="rejected-stats">-</div>
+                                <div class="stat-label">Reddedilen</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="pending-stats">-</div>
+                                <div class="stat-label">Bekleyen</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pending Validations -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h2>Bekleyen Doğrulamalar</h2>
+                    </div>
+                    <div class="card-content">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Ürün</th>
+                                        <th>Şirket</th>
+                                        <th>Doğrulama Türü</th>
+                                        <th>Gönderim Tarihi</th>
+                                        <th>İşlemler</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pending-validations">
+                                    <tr>
+                                        <td colspan="5">Veriler yükleniyor...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h2>Son Aktiviteler</h2>
+                    </div>
+                    <div class="card-content">
+                        <div class="activity-feed" id="recent-activities">
+                            <div>Veriler yükleniyor...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance Metrics -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h2>Performans Metrikleri</h2>
+                    </div>
+                    <div class="card-content">
+                        <div class="metrics-grid" id="performance-metrics">
+                            <div>Veriler yükleniyor...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Simulate API calls with the data we got from our test
+        const mockData = {
+            total: {"success":true,"data":28},
+            approved: {"success":true,"data":12},
+            rejected: {"success":true,"data":7},
+            pending: {"success":true,"data":7},
+            pendingList: {"success":true,"data":[{"id":11,"product_name":"Ton Balığı Konservesi","company_name":"Test Food Company","validation_type":"field_visit","requested_at":"2025-10-23 21:45:35","priority":"normal"},{"id":19,"product_name":"Bal","company_name":"Test Food Company","validation_type":"field_visit","requested_at":"2025-10-25 16:23:53","priority":"normal"},{"id":27,"product_name":"Bal","company_name":"Test Food Company","validation_type":"field_visit","requested_at":"2025-10-25 16:26:26","priority":"normal"},{"id":20,"product_name":"Ton Balığı Konservesi","company_name":"Test Food Company","validation_type":"third_party_audit","requested_at":"2025-10-25 16:53:53","priority":"normal"},{"id":28,"product_name":"Ton Balığı Konservesi","company_name":"Test Food Company","validation_type":"third_party_audit","requested_at":"2025-10-25 16:56:26","priority":"normal"}]},
+            activities: {"success":true,"data":[{"id":25,"product_name":"Kot Pantolon","company_name":"Test Food Company","action":"Doğrulama Reddedildi","date":"2025-10-25 17:26:26","status":"needs_clarification"},{"id":24,"product_name":"Organik Pamuk Tişört","company_name":"Test Food Company","action":"Doğrulama Onaylandı","date":"2025-10-25 17:26:26","status":"approved"},{"id":17,"product_name":"Kot Pantolon","company_name":"Test Food Company","action":"Doğrulama Reddedildi","date":"2025-10-25 17:23:53","status":"needs_clarification"},{"id":16,"product_name":"Organik Pamuk Tişört","company_name":"Test Food Company","action":"Doğrulama Onaylandı","date":"2025-10-25 17:23:53","status":"approved"},{"id":23,"product_name":"Ton Balığı Konservesi","company_name":"Test Food Company","action":"Doğrulama Reddedildi","date":"2025-10-24 17:26:26","status":"rejected"}]},
+            performance: {"success":true,"data":[{"name":"Tamamlanan Doğrulamalar","value":21,"target":100,"unit":"adet"},{"name":"Başarı Oranı","value":57.14,"target":95,"unit":"%"},{"name":"Ortalama Yanıt Süresi","value":19.2,"target":24,"unit":"saat"},{"name":"İtibar Puanı","value":"0.00","target":90,"unit":"/100"}]}
+        };
+
+        // Load statistics
+        document.getElementById('total-stats').textContent = mockData.total.data;
+        document.getElementById('approved-stats').textContent = mockData.approved.data;
+        document.getElementById('rejected-stats').textContent = mockData.rejected.data;
+        document.getElementById('pending-stats').textContent = mockData.pending.data;
+
+        // Load pending validations
+        const pendingValidationsContainer = document.getElementById('pending-validations');
+        if (mockData.pendingList.success && mockData.pendingList.data.length > 0) {
+            pendingValidationsContainer.innerHTML = mockData.pendingList.data.map(validation => `
+                <tr>
+                    <td>${escapeHtml(validation.product_name)}</td>
+                    <td>${escapeHtml(validation.company_name)}</td>
+                    <td>${escapeHtml(validation.validation_type)}</td>
+                    <td>${formatDate(validation.requested_at)}</td>
+                    <td>
+                        <button class="btn btn-primary" onclick="viewValidation(${validation.id})">İncele</button>
+                    </td>
+                </tr>
+            `).join('');
+        } else {
+            pendingValidationsContainer.innerHTML = '<tr><td colspan="5">Bekleyen doğrulama bulunamadı</td></tr>';
+        }
+
+        // Load recent activities
+        const activitiesContainer = document.getElementById('recent-activities');
+        if (mockData.activities.success && mockData.activities.data.length > 0) {
+            activitiesContainer.innerHTML = mockData.activities.data.map(activity => `
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        ${activity.status === 'approved' ? '✅' : activity.status === 'rejected' ? '❌' : '⏳'}
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">${escapeHtml(activity.product_name)}</div>
+                        <div class="activity-description">
+                            ${escapeHtml(activity.action)} - ${escapeHtml(activity.company_name)}
+                        </div>
+                        <div class="activity-time">${formatTime(activity.date)}</div>
+                    </div>
+                </div>
+            `).join('');
+        } else {
+            activitiesContainer.innerHTML = '<div>Henüz aktivite bulunmuyor</div>';
+        }
+
+        // Load performance metrics
+        const metricsContainer = document.getElementById('performance-metrics');
+        if (mockData.performance.success && mockData.performance.data.length > 0) {
+            metricsContainer.innerHTML = mockData.performance.data.map(metric => `
+                <div class="metric-item">
+                    <div class="metric-label">${escapeHtml(metric.name)}</div>
+                    <div class="metric-value">${metric.value}<span class="metric-unit">${escapeHtml(metric.unit)}</span></div>
+                    <div class="metric-target">Hedef: ${metric.target}${escapeHtml(metric.unit)}</div>
+                    <div class="progress-bar">
+                        <div style="width: ${Math.min((metric.value / metric.target) * 100, 100)}%"></div>
+                    </div>
+                </div>
+            `).join('');
+        } else {
+            metricsContainer.innerHTML = '<div>Performans metrikleri bulunmuyor</div>';
+        }
+
+        // Helper functions
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('tr-TR');
+        }
+
+        function formatTime(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleString('tr-TR');
+        }
+
+        function viewValidation(validationId) {
+            alert('Validation ' + validationId + ' would be viewed in a real application');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test</title>
+</head>
+<body>
+    <h1>API Test</h1>
+    <button onclick="testAPI()">Test Product API</button>
+    <div id="result"></div>
+
+    <script>
+        function testAPI() {
+            const url = '/Küresel/api/v1/products/get?product_code=PRD-GIDA-003';
+            console.log('Calling API with URL:', url);
+            
+            fetch(url)
+                .then(response => {
+                    console.log('Response status:', response.status);
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Data:', data);
+                    document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('result').innerHTML = '<p>Error: ' + error.message + '</p>';
+                });
+        }
+    </script>
+</body>
+</html>

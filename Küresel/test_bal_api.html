@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Bal API Response</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .image-test {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Test Bal API Response</h1>
+        
+        <h2>API Response Data</h2>
+        <pre id="api-response">Loading...</pre>
+        
+        <div class="image-test">
+            <h2>Image Display Test</h2>
+            <p>Image from API data:</p>
+            <img id="api-image" src="" alt="API Image" style="max-width: 300px; border: 1px solid #ccc;">
+            <p id="image-status">Waiting for image...</p>
+        </div>
+    </div>
+
+    <script>
+        // Fetch the bal product data from the API
+        fetch('/Küresel/api/v1/products/get.php?id=3')
+            .then(response => response.json())
+            .then(data => {
+                // Display the raw API response
+                document.getElementById('api-response').textContent = JSON.stringify(data, null, 2);
+                
+                // Try to display the image
+                if (data.success && data.data.product_images && data.data.product_images.length > 0) {
+                    let imagePath = data.data.product_images[0];
+                    let fullImagePath = '/Küresel' + imagePath;
+                    
+                    const imgElement = document.getElementById('api-image');
+                    imgElement.src = fullImagePath;
+                    
+                    imgElement.onload = function() {
+                        document.getElementById('image-status').textContent = 'SUCCESS: Image loaded from ' + fullImagePath;
+                        document.getElementById('image-status').style.color = 'green';
+                    };
+                    
+                    imgElement.onerror = function() {
+                        document.getElementById('image-status').textContent = 'ERROR: Failed to load image from ' + fullImagePath;
+                        document.getElementById('image-status').style.color = 'red';
+                        // Try fallback
+                        imgElement.src = '/Küresel/assets/images/product-placeholder.jpg';
+                    };
+                } else {
+                    document.getElementById('image-status').textContent = 'No image data found in API response';
+                    document.getElementById('image-status').style.color = 'orange';
+                }
+            })
+            .catch(error => {
+                document.getElementById('api-response').textContent = 'Error fetching API data: ' + error.message;
+                document.getElementById('image-status').textContent = 'API request failed';
+                document.getElementById('image-status').style.color = 'red';
+            });
+    </script>
+</body>
+</html>

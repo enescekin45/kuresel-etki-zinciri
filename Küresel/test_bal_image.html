@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bal Image Test</title>
+</head>
+<body>
+    <h1>Bal Image Test</h1>
+    
+    <h2>Direct Image Access Test</h2>
+    <p>This tests if the bal.svg image can be accessed directly:</p>
+    <img src="/Küresel/assets/images/products/bal.svg" alt="Bal" width="300" height="300">
+    
+    <h2>With Error Handling</h2>
+    <p>This version has error handling:</p>
+    <img src="/Küresel/assets/images/products/bal.svg" alt="Bal" width="300" height="300" onerror="this.src='/Küresel/assets/images/product-placeholder.jpg'; this.alt='Image not found';">
+    
+    <h2>Fallback Test</h2>
+    <p>If the above doesn't work, this should show the placeholder:</p>
+    <img src="/Küresel/assets/images/product-placeholder.jpg" alt="Placeholder" width="300" height="300">
+</body>
+</html>

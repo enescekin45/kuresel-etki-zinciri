@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Selectors</title>
+</head>
+<body>
+    <!-- Statistics -->
+    <div class="dashboard-card">
+        <div class="card-content">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" data-load="/api/validator/stats/total">-</div>
+                    <div class="stat-label">Toplam Doğrulama</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-load="/api/validator/stats/approved">-</div>
+                    <div class="stat-label">Onaylanan</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-load="/api/validator/stats/rejected">-</div>
+                    <div class="stat-label">Reddedilen</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-load="/api/validator/stats/pending">-</div>
+                    <div class="stat-label">Bekleyen</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Test the selectors
+        console.log('Testing selectors...');
+        
+        const totalElement = document.querySelector('[data-load="/api/validator/stats/total"]');
+        console.log('Total element found:', !!totalElement);
+        
+        const approvedElement = document.querySelector('[data-load="/api/validator/stats/approved"]');
+        console.log('Approved element found:', !!approvedElement);
+        
+        const rejectedElement = document.querySelector('[data-load="/api/validator/stats/rejected"]');
+        console.log('Rejected element found:', !!rejectedElement);
+        
+        const pendingElement = document.querySelector('[data-load="/api/validator/stats/pending"]');
+        console.log('Pending element found:', !!pendingElement);
+        
+        // Test updating elements
+        if (totalElement) {
+            totalElement.textContent = '28';
+            console.log('Updated total element');
+        }
+        
+        // Test all stat elements
+        const statElements = document.querySelectorAll('[data-load^="/api/validator/stats/"]');
+        console.log('Found', statElements.length, 'stat elements');
+    </script>
+</body>
+</html>

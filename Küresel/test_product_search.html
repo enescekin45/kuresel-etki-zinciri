@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Search Test</title>
+</head>
+<body>
+    <h1>Product Search Test</h1>
+    <p>Testing product search functionality</p>
+    
+    <script>
+        // Test the product search API
+        async function testProductSearch() {
+            try {
+                const response = await fetch('/Küresel/api/v1/products/get?product_code=PRD-GIDA-001');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const result = await response.json();
+                console.log('Product search result:', result);
+                document.body.innerHTML += '<p>Success! Product found: ' + result.data.product_name + '</p>';
+            } catch (error) {
+                console.error('Error:', error);
+                document.body.innerHTML += '<p>Error: ' + error.message + '</p>';
+            }
+        }
+        
+        testProductSearch();
+    </script>
+</body>
+</html>

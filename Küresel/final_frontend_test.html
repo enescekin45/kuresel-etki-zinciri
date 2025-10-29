@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Frontend Image Test</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .test-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .test-card:hover {
+            transform: translateY(-5px);
+        }
+        .test-image-container {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f1f3f4;
+        }
+        .test-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .test-info {
+            padding: 15px;
+        }
+        .test-name {
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .test-status {
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .status-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .summary {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .summary-item {
+            text-align: center;
+            padding: 15px;
+            background-color: #f1f3f4;
+            border-radius: 6px;
+        }
+        .summary-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+        }
+        .summary-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Final Frontend Image Display Test</h1>
+        
+        <div class="summary">
+            <h2>Test Summary</h2>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <div class="summary-number" id="total-count">0</div>
+                    <div class="summary-label">Total Products</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-number" id="success-count">0</div>
+                    <div class="summary-label">Images Loaded</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-number" id="error-count">0</div>
+                    <div class="summary-label">Images Failed</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-number" id="success-rate">0%</div>
+                    <div class="summary-label">Success Rate</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-grid" id="test-grid">
+            <!-- Test cards will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        // Sample product data that matches what would come from the API
+        const sampleProducts = [
+            {
+                id: 2,
+                uuid: "prod-002",
+                product_name: "Organik Zeytinyağı",
+                product_code: "PRD-GIDA-001",
+                category: "Gıda",
+                product_images: ["/assets/images/products/organik-zeytinyagi.svg"]
+            },
+            {
+                id: 3,
+                uuid: "prod-003",
+                product_name: "Bal",
+                product_code: "PRD-GIDA-002",
+                category: "Gıda",
+                product_images: ["/assets/images/products/bal.svg"]
+            },
+            {
+                id: 4,
+                uuid: "prod-004",
+                product_name: "Ton Balığı Konservesi",
+                product_code: "PRD-GIDA-003",
+                category: "Gıda",
+                product_images: ["/assets/images/products/ton-baligi.svg"]
+            },
+            {
+                id: 5,
+                uuid: "prod-005",
+                product_name: "Organik Pamuk Tişört",
+                product_code: "PRD-TEKSTIL-001",
+                category: "Tekstil",
+                product_images: ["/assets/images/products/tisort.svg"]
+            },
+            {
+                id: 6,
+                uuid: "prod-006",
+                product_name: "Kot Pantolon",
+                product_code: "PRD-TEKSTIL-002",
+                category: "Tekstil",
+                product_images: ["/assets/images/products/kot-pantolon.svg"]
+            },
+            {
+                id: 7,
+                uuid: "prod-007",
+                product_name: "Akıllı Telefon",
+                product_code: "PRD-ELEK-001",
+                category: "Elektronik",
+                product_images: ["/assets/images/products/akilli-telefon.svg"]
+            },
+            {
+                id: 8,
+                uuid: "prod-008",
+                product_name: "Dizüstü Bilgisayar",
+                product_code: "PRD-ELEK-002",
+                category: "Elektronik",
+                product_images: ["/assets/images/products/dizustu-bilgisayar.svg"]
+            },
+            {
+                id: 9,
+                uuid: "prod-009",
+                product_name: "Doğal Şampuan",
+                product_code: "PRD-KOZ-001",
+                category: "Kozmetik",
+                product_images: ["/assets/images/products/dogal-sampuan.svg"]
+            },
+            {
+                id: 10,
+                uuid: "prod-010",
+                product_name: "Organik Krem",
+                product_code: "PRD-KOZ-002",
+                category: "Kozmetik",
+                product_images: ["/assets/images/products/organik-krem.svg"]
+            }
+        ];
+
+        // Test statistics
+        let stats = {
+            total: sampleProducts.length,
+            success: 0,
+            error: 0
+        };
+
+        // Update summary display
+        function updateSummary() {
+            document.getElementById('total-count').textContent = stats.total;
+            document.getElementById('success-count').textContent = stats.success;
+            document.getElementById('error-count').textContent = stats.error;
+            
+            const successRate = stats.total > 0 ? Math.round((stats.success / stats.total) * 100) : 0;
+            document.getElementById('success-rate').textContent = successRate + '%';
+        }
+
+        // Create a test card for a product
+        function createTestCard(product) {
+            const card = document.createElement('div');
+            card.className = 'test-card';
+            
+            // FIXED: Ensure proper image path handling with /Küresel prefix
+            let productImage = '/Küresel/assets/images/product-placeholder.jpg';
+            if (product.product_images && product.product_images.length > 0) {
+                let imagePath = product.product_images[0];
+                if (imagePath.startsWith('/')) {
+                    productImage = '/Küresel' + imagePath;
+                } else {
+                    productImage = '/Küresel/' + imagePath;
+                }
+            }
+            
+            card.innerHTML = `
+                <div class="test-image-container">
+                    <img src="${productImage}" alt="${product.product_name}" class="test-image" onerror="handleImageError(this, ${product.id})">
+                </div>
+                <div class="test-info">
+                    <div class="test-name">${product.product_name}</div>
+                    <div class="test-status status-loading">Loading...</div>
+                </div>
+            `;
+            
+            // Set up image load event
+            const imgElement = card.querySelector('.test-image');
+            imgElement.onload = function() {
+                handleImageLoad(this, product.id);
+            };
+            
+            return card;
+        }
+
+        // Handle successful image load
+        function handleImageLoad(imgElement, productId) {
+            const statusElement = imgElement.closest('.test-card').querySelector('.test-status');
+            statusElement.textContent = 'Loaded Successfully';
+            statusElement.className = 'test-status status-success';
+            stats.success++;
+            updateSummary();
+        }
+
+        // Handle image loading error
+        function handleImageError(imgElement, productId) {
+            const statusElement = imgElement.closest('.test-card').querySelector('.test-status');
+            statusElement.textContent = 'Failed to Load';
+            statusElement.className = 'test-status status-error';
+            // Set fallback image
+            imgElement.src = '/Küresel/assets/images/product-placeholder.jpg';
+            stats.error++;
+            updateSummary();
+        }
+
+        // Initialize the test
+        function initializeTest() {
+            const grid = document.getElementById('test-grid');
+            
+            // Clear existing content
+            grid.innerHTML = '';
+            
+            // Create and add cards for each product
+            sampleProducts.forEach(product => {
+                const card = createTestCard(product);
+                grid.appendChild(card);
+            });
+            
+            // Initialize summary
+            updateSummary();
+        }
+
+        // Run the test when the page loads
+        document.addEventListener('DOMContentLoaded', initializeTest);
+    </script>
+</body>
+</html>

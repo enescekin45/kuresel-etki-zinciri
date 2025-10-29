@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="300" height="300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#f8f9fa"/>
+  <rect x="0" y="0" width="300" height="300" fill="url(#bgGradient)" opacity="0.3"/>
+  
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e9ecef;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#dee2e6;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="productGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#9370DB;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#603da8;stop-opacity:0.9" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+      <feOffset dx="1" dy="1" result="offsetblur"/>
+      <feFlood flood-color="rgba(0,0,0,0.2)"/>
+      <feComposite in2="offsetblur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Product visualization -->
+  <path d="M130 80 Q150 60 170 80 L180 180 Q150 200 120 180 Z" fill="url(#productGradient)" filter="url(#shadow)"/>
+        <ellipse cx="150" cy="90" rx="15" ry="25" fill="#fff" opacity="0.3"/>
+        <rect x="140" y="120" width="20" height="40" fill="#9370DB" opacity="0.2"/>
+        <path d="M135 170 Q150 180 165 170" stroke="#fff" stroke-width="2" fill="none" opacity="0.4"/>
+  
+  <!-- Product label -->
+  <rect x="50" y="230" width="200" height="40" rx="5" fill="rgba(255,255,255,0.9)" stroke="#ddd"/>
+  <text x="150" y="255" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#333">Doğal Şampuan</text>
+</svg>

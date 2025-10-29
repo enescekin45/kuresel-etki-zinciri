@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test API Calls</title>
+</head>
+<body>
+    <h1>Testing API Calls</h1>
+    <div id="results"></div>
+
+    <script>
+        async function testApiCalls() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<p>Testing API calls...</p>';
+            
+            try {
+                // Test total validations endpoint
+                const totalResponse = await fetch('/Küresel/api/v1/validator/stats/total.php');
+                const totalData = await totalResponse.json();
+                resultsDiv.innerHTML += `<p>Total validations: ${JSON.stringify(totalData)}</p>`;
+                
+                // Test approved validations endpoint
+                const approvedResponse = await fetch('/Küresel/api/v1/validator/stats/approved.php');
+                const approvedData = await approvedResponse.json();
+                resultsDiv.innerHTML += `<p>Approved validations: ${JSON.stringify(approvedData)}</p>`;
+                
+                // Test rejected validations endpoint
+                const rejectedResponse = await fetch('/Küresel/api/v1/validator/stats/rejected.php');
+                const rejectedData = await rejectedResponse.json();
+                resultsDiv.innerHTML += `<p>Rejected validations: ${JSON.stringify(rejectedData)}</p>`;
+                
+                // Test pending validations endpoint
+                const pendingResponse = await fetch('/Küresel/api/v1/validator/stats/pending.php');
+                const pendingData = await pendingResponse.json();
+                resultsDiv.innerHTML += `<p>Pending validations: ${JSON.stringify(pendingData)}</p>`;
+                
+            } catch (error) {
+                resultsDiv.innerHTML += `<p>Error: ${error.message}</p>`;
+                console.error('Error:', error);
+            }
+        }
+        
+        // Run the test when the page loads
+        document.addEventListener('DOMContentLoaded', testApiCalls);
+    </script>
+</body>
+</html>

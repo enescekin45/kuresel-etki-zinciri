@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Fix Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-container { max-width: 800px; margin: 0 auto; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
+        .test-result { margin: 10px 0; padding: 10px; background-color: #f5f5f5; }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        input { padding: 8px; margin: 5px; width: 300px; }
+        .form-group { margin: 10px 0; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Search Fix Test</h1>
+        
+        <div class="test-section">
+            <h2>Manual Search Form Test</h2>
+            <form id="test-search-form">
+                <div class="form-group">
+                    <label for="product-code">Ürün Kodu</label>
+                    <input type="text" id="product-code" name="product_code" 
+                           placeholder="Örn: COMP123-PROD456789">
+                </div>
+                
+                <div class="form-group">
+                    <label for="barcode">Barkod</label>
+                    <input type="text" id="barcode" name="barcode" 
+                           placeholder="Ürün barkodunu girin">
+                </div>
+                
+                <div class="form-group">
+                    <label for="search-text">Genel Arama</label>
+                    <input type="text" id="search-text" name="search" 
+                           placeholder="Ürün adı, şirket adı veya kategori">
+                </div>
+                
+                <button type="submit">🔍 Ürün Ara</button>
+            </form>
+            <div id="search-result" class="test-result"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('test-search-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const productCode = formData.get('product_code');
+            const barcode = formData.get('barcode');
+            const search = formData.get('search');
+            
+            // Check which field has a value
+            let searchType, searchValue;
+            if (productCode && productCode.trim() !== '') {
+                searchType = 'product_code';
+                searchValue = productCode.trim();
+            } else if (barcode && barcode.trim() !== '') {
+                searchType = 'barcode';
+                searchValue = barcode.trim();
+            } else if (search && search.trim() !== '') {
+                searchType = 'general';
+                searchValue = search.trim();
+            } else {
+                document.getElementById('search-result').innerHTML = '<div class="error">Lütfen en az bir arama kriteri girin</div>';
+                return;
+            }
+            
+            try {
+                // Build query parameters based on search type
+                let queryParams = {};
+                switch(searchType) {
+                    case 'product_code':
+                        queryParams.product_code = searchValue;
+                        break;
+                    case 'barcode':
+                        queryParams.barcode = searchValue;
+                        break;
+                    case 'general':
+                        queryParams.search = searchValue;
+                        break;
+                }
+                
+                const queryString = new URLSearchParams(queryParams).toString();
+                const apiUrl = `/Küresel/api/products?${queryString}`;
+                
+                console.log('Making API request to:', apiUrl);
+                
+                const response = await fetch(apiUrl);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    document.getElementById('search-result').innerHTML = `
+                        <div class="success">
+                            <h3>Success!</h3>
+                            <p>Found ${result.data.products.length} products</p>
+                            ${result.data.products.map(product => `
+                                <div style="border: 1px solid #ccc; margin: 10px 0; padding: 10px;">
+                                    <h4>${product.product_name}</h4>
+                                    <p><strong>Code:</strong> ${product.product_code}</p>
+                                    <p><strong>Brand:</strong> ${product.brand || 'Not specified'}</p>
+                                    <p><strong>Category:</strong> ${product.category}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                } else {
+                    document.getElementById('search-result').innerHTML = `<div class="error">Error: ${result.message}</div>`;
+                }
+            } catch (error) {
+                document.getElementById('search-result').innerHTML = `<div class="error">Error: ${error.message}</div>`;
+            }
+        });
+        
+        // Add input validation
+        document.getElementById('product-code').addEventListener('input', function(e) {
+            // Allow only uppercase letters, numbers, and dash
+            e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9-]/g, '');
+        });
+        
+        document.getElementById('barcode').addEventListener('input', function(e) {
+            // Allow only numbers
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+        });
+    </script>
+</body>
+</html>

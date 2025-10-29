@@ -1,0 +1,49 @@
+{
+    "name": "kuresel/etki-zinciri",
+    "description": "Global Impact Chain - Blockchain-based supply chain transparency platform",
+    "type": "project",
+    "keywords": ["blockchain", "supply-chain", "transparency", "sustainability", "impact-tracking"],
+    "license": "MIT",
+    "require": {
+        "php": ">=8.0",
+        "ext-pdo": "*",
+        "ext-json": "*",
+        "ext-curl": "*",
+        "endroid/qr-code": "^4.8",
+        "web3p/web3.php": "^0.1",
+        "chillerlan/php-qrcode": "^4.3",
+        "monolog/monolog": "^2.9",
+        "vlucas/phpdotenv": "^5.5",
+        "firebase/php-jwt": "^6.8",
+        "ramsey/uuid": "^4.7",
+        "guzzlehttp/guzzle": "^7.8"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "phpstan/phpstan": "^1.10"
+    },
+    "autoload": {
+        "psr-4": {
+            "KureselEtkiZinciri\\": "classes/",
+            "KureselEtkiZinciri\\Api\\": "api/",
+            "KureselEtkiZinciri\\Blockchain\\": "blockchain/",
+            "KureselEtkiZinciri\\Frontend\\": "frontend/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "KureselEtkiZinciri\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "analyse": "phpstan analyse",
+        "start": "php -S localhost:8000 -t ."
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Final Bal Image Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #eee;
+            border-radius: 5px;
+        }
+        .test-image {
+            max-width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Final Bal Image Test</h1>
+        
+        <div class="test-section">
+            <h2>1. Direct Access to bal_simple.svg</h2>
+            <p>Testing the new simplified SVG image:</p>
+            <img id="test1" class="test-image" src="/Küresel/assets/images/products/bal_simple.svg" alt="Bal Simple SVG">
+            <div id="result1" class="status info">Testing...</div>
+        </div>
+        
+        <div class="test-section">
+            <h2>2. Original bal.svg</h2>
+            <p>Testing the original SVG image:</p>
+            <img id="test2" class="test-image" src="/Küresel/assets/images/products/bal.svg" alt="Bal Original SVG">
+            <div id="result2" class="status info">Testing...</div>
+        </div>
+        
+        <div class="test-section">
+            <h2>3. Product Page Test</h2>
+            <p>Testing the actual product page display:</p>
+            <iframe id="product-frame" src="/Küresel/?page=product&id=3" width="100%" height="500" frameborder="0"></iframe>
+            <div id="result3" class="status info">Loading product page...</div>
+        </div>
+        
+        <div class="test-section">
+            <h2>4. Fallback Test</h2>
+            <p>Testing fallback to placeholder image:</p>
+            <img id="test4" class="test-image" src="/Küresel/assets/images/product-placeholder.jpg" alt="Placeholder">
+            <div id="result4" class="status info">Testing...</div>
+        </div>
+    </div>
+
+    <script>
+        function updateStatus(testId, message, statusClass) {
+            const resultElement = document.getElementById('result' + testId);
+            resultElement.textContent = message;
+            resultElement.className = 'status ' + statusClass;
+        }
+        
+        // Test 1: bal_simple.svg
+        document.getElementById('test1').onload = function() {
+            updateStatus(1, 'SUCCESS: bal_simple.svg loaded correctly', 'success');
+        };
+        document.getElementById('test1').onerror = function() {
+            updateStatus(1, 'ERROR: Failed to load bal_simple.svg', 'error');
+        };
+        
+        // Test 2: bal.svg
+        document.getElementById('test2').onload = function() {
+            updateStatus(2, 'SUCCESS: bal.svg loaded correctly', 'success');
+        };
+        document.getElementById('test2').onerror = function() {
+            updateStatus(2, 'ERROR: Failed to load bal.svg', 'error');
+        };
+        
+        // Test 4: Placeholder
+        document.getElementById('test4').onload = function() {
+            updateStatus(4, 'SUCCESS: Placeholder image loaded correctly', 'success');
+        };
+        document.getElementById('test4').onerror = function() {
+            updateStatus(4, 'ERROR: Failed to load placeholder image', 'error');
+        };
+        
+        // Test 3: Product page
+        document.getElementById('product-frame').onload = function() {
+            updateStatus(3, 'SUCCESS: Product page loaded', 'success');
+        };
+        document.getElementById('product-frame').onerror = function() {
+            updateStatus(3, 'ERROR: Failed to load product page', 'error');
+        };
+    </script>
+</body>
+</html>

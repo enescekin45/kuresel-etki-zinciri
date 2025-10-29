@@ -1,0 +1,66 @@
+<svg width="500" height="300" viewBox="0 0 500 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Supply Chain Transparency Illustration -->
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="chainGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#2563eb;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1d4ed8;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="500" height="300" fill="url(#bgGrad)"/>
+  
+  <!-- Supply Chain Nodes -->
+  <!-- Farm/Producer -->
+  <circle cx="80" cy="150" r="25" fill="#10b981" stroke="white" stroke-width="3"/>
+  <text x="80" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="white">🌱</text>
+  <text x="80" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#374151">Uretici</text>
+  
+  <!-- Processing -->
+  <circle cx="180" cy="150" r="25" fill="#f59e0b" stroke="white" stroke-width="3"/>
+  <text x="180" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="white">🏭</text>
+  <text x="180" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#374151">Isleme</text>
+  
+  <!-- Distribution -->
+  <circle cx="280" cy="150" r="25" fill="#8b5cf6" stroke="white" stroke-width="3"/>
+  <text x="280" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="white">🚛</text>
+  <text x="280" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#374151">Dagitim</text>
+  
+  <!-- Retail -->
+  <circle cx="380" cy="150" r="25" fill="#ec4899" stroke="white" stroke-width="3"/>
+  <text x="380" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="white">🏪</text>
+  <text x="380" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#374151">Perakende</text>
+  
+  <!-- Chain Links -->
+  <line x1="105" y1="150" x2="155" y2="150" stroke="url(#chainGrad)" stroke-width="4"/>
+  <line x1="205" y1="150" x2="255" y2="150" stroke="url(#chainGrad)" stroke-width="4"/>
+  <line x1="305" y1="150" x2="355" y2="150" stroke="url(#chainGrad)" stroke-width="4"/>
+  
+  <!-- Blockchain Layer -->
+  <rect x="50" y="50" width="350" height="30" rx="15" fill="#1f2937" opacity="0.9"/>
+  <text x="225" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="white" font-weight="600">Blockchain Kayit Katmani</text>
+  
+  <!-- QR Code -->
+  <rect x="420" y="120" width="60" height="60" fill="white" stroke="#374151" stroke-width="2" rx="8"/>
+  <rect x="430" y="130" width="40" height="40" fill="#000"/>
+  <rect x="435" y="135" width="30" height="30" fill="white"/>
+  <rect x="440" y="140" width="20" height="20" fill="#000"/>
+  <text x="450" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#374151">QR Kod</text>
+  
+  <!-- Data Flow Arrows -->
+  <path d="M 80 120 Q 150 80 280 120" stroke="#3b82f6" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 180 120 Q 250 80 380 120" stroke="#3b82f6" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  
+  <!-- Transparency Icon -->
+  <circle cx="250" cy="220" r="20" fill="#0ea5e9" stroke="white" stroke-width="2"/>
+  <text x="250" y="228" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="white">👁</text>
+  <text x="250" y="250" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#374151" font-weight="600">Seffaflik</text>
+  
+  <!-- Title -->
+  <text x="250" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#1f2937" font-weight="700">Tam Seffaflik &amp; Izlenebilirlik</text>
+</svg>

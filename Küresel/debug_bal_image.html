@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Bal Image</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .image-container {
+            margin: 10px 0;
+        }
+        img {
+            max-width: 300px;
+            border: 1px solid #ddd;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <h1>Debug Bal Image Display</h1>
+    
+    <div class="test-section">
+        <h2>Test 1: Direct SVG Access</h2>
+        <p>Testing direct access to the bal.svg file:</p>
+        <div class="image-container">
+            <img id="test1" src="/Küresel/assets/images/products/bal.svg" alt="Bal SVG" onerror="showError('test1', 'Failed to load bal.svg')">
+        </div>
+        <div id="result1" class="status">Loading...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 2: With Error Handling</h2>
+        <p>Testing with fallback to placeholder:</p>
+        <div class="image-container">
+            <img id="test2" src="/Küresel/assets/images/products/bal.svg" alt="Bal SVG" 
+                 onerror="this.src='/Küresel/assets/images/product-placeholder.jpg'; showResult('test2', 'Loaded placeholder instead of bal.svg')">
+        </div>
+        <div id="result2" class="status">Loading...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 3: Placeholder Image</h2>
+        <p>This should always work:</p>
+        <div class="image-container">
+            <img id="test3" src="/Küresel/assets/images/product-placeholder.jpg" alt="Placeholder">
+        </div>
+        <div id="result3" class="status">Loading...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 4: Organik Zeytinyağı (Working Reference)</h2>
+        <p>Comparing with a working image:</p>
+        <div class="image-container">
+            <img id="test4" src="/Küresel/assets/images/products/organik-zeytinyagi.svg" alt="Organik Zeytinyağı">
+        </div>
+        <div id="result4" class="status">Loading...</div>
+    </div>
+
+    <script>
+        function showResult(testId, message) {
+            const resultElement = document.getElementById('result' + testId.replace('test', ''));
+            resultElement.textContent = message;
+            resultElement.className = 'status success';
+        }
+        
+        function showError(testId, message) {
+            const resultElement = document.getElementById('result' + testId.replace('test', ''));
+            resultElement.textContent = message;
+            resultElement.className = 'status error';
+        }
+        
+        // Set up image load handlers
+        document.addEventListener('DOMContentLoaded', function() {
+            // Test 1
+            const img1 = document.getElementById('test1');
+            img1.onload = function() {
+                showResult('test1', 'SUCCESS: bal.svg loaded correctly');
+            };
+            
+            // Test 2
+            const img2 = document.getElementById('test2');
+            img2.onload = function() {
+                showResult('test2', 'SUCCESS: bal.svg loaded correctly');
+            };
+            
+            // Test 3
+            const img3 = document.getElementById('test3');
+            img3.onload = function() {
+                showResult('test3', 'SUCCESS: placeholder.jpg loaded correctly');
+            };
+            
+            // Test 4
+            const img4 = document.getElementById('test4');
+            img4.onload = function() {
+                showResult('test4', 'SUCCESS: organik-zeytinyagi.svg loaded correctly');
+            };
+        });
+    </script>
+</body>
+</html>

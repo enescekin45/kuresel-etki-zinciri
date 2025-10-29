@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Bal Simple Image</title>
+</head>
+<body>
+    <h1>Test Bal Simple Image</h1>
+    
+    <h2>Direct Access to bal_simple.svg</h2>
+    <img src="/Küresel/assets/images/products/bal_simple.svg" alt="Bal Simple" width="300" height="300">
+    
+    <h2>With Error Handling</h2>
+    <img src="/Küresel/assets/images/products/bal_simple.svg" alt="Bal Simple" width="300" height="300" 
+         onerror="this.src='/Küresel/assets/images/product-placeholder.jpg'; this.alt='Image not found';">
+    
+    <h2>Comparison with Original bal.svg</h2>
+    <img src="/Küresel/assets/images/products/bal.svg" alt="Bal Original" width="300" height="300">
+</body>
+</html>

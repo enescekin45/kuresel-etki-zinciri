@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug API Calls</title>
+</head>
+<body>
+    <h1>Debugging API Calls</h1>
+    <div id="results"></div>
+
+    <script>
+        async function debugApiCalls() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<p>Debugging API calls...</p>';
+            
+            // Test URLs that match what the JavaScript is trying to fetch
+            const endpoints = [
+                '/api/validator/stats/total.php',
+                '/api/validator/stats/approved.php',
+                '/api/validator/stats/rejected.php',
+                '/api/validator/stats/pending.php'
+            ];
+            
+            for (const endpoint of endpoints) {
+                try {
+                    resultsDiv.innerHTML += `<p>Testing: ${endpoint}</p>`;
+                    const response = await fetch(endpoint);
+                    const data = await response.json();
+                    resultsDiv.innerHTML += `<p>Response: ${JSON.stringify(data)}</p>`;
+                } catch (error) {
+                    resultsDiv.innerHTML += `<p>Error for ${endpoint}: ${error.message}</p>`;
+                }
+            }
+        }
+        
+        // Run the debug when the page loads
+        document.addEventListener('DOMContentLoaded', debugApiCalls);
+    </script>
+</body>
+</html>

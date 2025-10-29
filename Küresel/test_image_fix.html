@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Fix Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-image {
+            max-width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border: 1px solid #ccc;
+            margin: 10px;
+        }
+        .result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Image Path Fix Test</h1>
+        
+        <div class="test-section">
+            <h2>Test 1: Direct Image Access</h2>
+            <p>This tests if images can be accessed directly with the correct path:</p>
+            
+            <img id="test-image-1" class="test-image" src="" alt="Test Image 1">
+            <div id="result-1" class="result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>Test 2: Bal Image</h2>
+            <p>Testing the specific "Bal" product image:</p>
+            
+            <img id="test-image-2" class="test-image" src="" alt="Bal Image">
+            <div id="result-2" class="result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>Test 3: Organik Zeytinyağı Image</h2>
+            <p>Testing the specific "Organik Zeytinyağı" product image:</p>
+            
+            <img id="test-image-3" class="test-image" src="" alt="Zeytinyağı Image">
+            <div id="result-3" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        // Test function to check if an image loads successfully
+        function testImageLoad(imgElement, imagePath, resultElement) {
+            // FIXED: Ensure proper image path handling with /Küresel prefix
+            let fullImagePath = imagePath;
+            if (imagePath.startsWith('/')) {
+                fullImagePath = '/Küresel' + imagePath;
+            } else {
+                fullImagePath = '/Küresel/' + imagePath;
+            }
+            
+            imgElement.src = fullImagePath;
+            
+            imgElement.onload = function() {
+                resultElement.innerHTML = `✅ SUCCESS: Image loaded successfully from ${fullImagePath}`;
+                resultElement.className = 'result success';
+            };
+            
+            imgElement.onerror = function() {
+                resultElement.innerHTML = `❌ ERROR: Failed to load image from ${fullImagePath}`;
+                resultElement.className = 'result error';
+            };
+        }
+        
+        // Run tests when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Test 1: Generic product placeholder
+            testImageLoad(
+                document.getElementById('test-image-1'),
+                '/assets/images/product-placeholder.jpg',
+                document.getElementById('result-1')
+            );
+            
+            // Test 2: Bal image
+            testImageLoad(
+                document.getElementById('test-image-2'),
+                '/assets/images/products/bal.svg',
+                document.getElementById('result-2')
+            );
+            
+            // Test 3: Organik Zeytinyağı image
+            testImageLoad(
+                document.getElementById('test-image-3'),
+                '/assets/images/products/organik-zeytinyagi.svg',
+                document.getElementById('result-3')
+            );
+        });
+    </script>
+</body>
+</html>

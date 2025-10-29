@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Improved Search Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; text-align: center; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
+        .test-result { margin: 10px 0; padding: 10px; background-color: #f5f5f5; border-radius: 4px; }
+        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        button { padding: 12px 24px; margin: 5px; cursor: pointer; background-color: #007bff; color: white; border: none; border-radius: 4px; font-size: 16px; }
+        button:hover { background-color: #0056b3; }
+        input { padding: 10px; margin: 5px; width: 100%; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; box-sizing: border-box; }
+        .form-group { margin: 15px 0; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; color: #333; }
+        .instructions { background-color: #e9ecef; padding: 15px; border-radius: 4px; margin: 20px 0; }
+        .tip { background-color: #fff3cd; padding: 10px; border-radius: 4px; margin: 10px 0; border: 1px solid #ffeaa7; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Improved Search Functionality Test</h1>
+        
+        <div class="instructions">
+            <h3>How to Test:</h3>
+            <p>This page tests the improved search functionality with better feedback and more flexible matching.</p>
+            <div class="tip">
+                <strong>💡 Tip:</strong> Try different search terms to see how the flexible matching works!
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>Manual Search Form</h2>
+            <form id="test-search-form">
+                <div class="form-group">
+                    <label for="product-code">Ürün Kodu (Partial matching supported)</label>
+                    <input type="text" id="product-code" name="product_code" 
+                           placeholder="Örn: PRD-GIDA or PRD-GIDA-001">
+                </div>
+                
+                <div class="form-group">
+                    <label for="barcode">Barkod (Partial matching supported)</label>
+                    <input type="text" id="barcode" name="barcode" 
+                           placeholder="Örn: 869123 or 8691234567890">
+                </div>
+                
+                <div class="form-group">
+                    <label for="search-text">Genel Arama (Searches in product name, brand, category, company)</label>
+                    <input type="text" id="search-text" name="search" 
+                           placeholder="Örn: Organik, Zeytinyağı, Food, Test">
+                </div>
+                
+                <button type="submit">🔍 Ürün Ara</button>
+                <button type="button" id="all-products-btn">📋 Tüm Ürünleri Göster</button>
+                <button type="button" id="clear-btn">🗑️ Alanları Temizle</button>
+            </form>
+            <div id="search-result" class="test-result" style="display: none;"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>Test Scenarios:</h3>
+            <ul>
+                <li><strong>Exact Match:</strong> "PRD-GIDA-001" or "8691234567890"</li>
+                <li><strong>Partial Match:</strong> "GIDA" or "869123"</li>
+                <li><li><strong>General Search:</strong> "Organik" or "Zeytin"</li>
+                <li><strong>Brand Search:</strong> "Organik Tarım"</li>
+                <li><strong>Company Search:</strong> "Test Food"</li>
+                <li><strong>No Results:</strong> "Nonexistent Product"</li>
+                <li><strong>All Products:</strong> Leave all fields empty</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('test-search-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const productCode = formData.get('product_code');
+            const barcode = formData.get('barcode');
+            const search = formData.get('search');
+            
+            // Check which field has a value (priority: product_code > barcode > search)
+            let queryParams = {};
+            if (productCode && productCode.trim() !== '') {
+                queryParams.product_code = productCode.trim();
+            } else if (barcode && barcode.trim() !== '') {
+                queryParams.barcode = barcode.trim();
+            } else if (search && search.trim() !== '') {
+                queryParams.search = search.trim();
+            }
+            // If all fields are empty, we'll get all products
+            
+            try {
+                const queryString = new URLSearchParams(queryParams).toString();
+                const apiUrl = `/Küresel/api/products${queryString ? '?' + queryString : ''}`;
+                
+                console.log('Making API request to:', apiUrl);
+                
+                const response = await fetch(apiUrl);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                
+                const resultDiv = document.getElementById('search-result');
+                resultDiv.style.display = 'block';
+                
+                if (result.success) {
+                    if (result.data.products.length > 0) {
+                        resultDiv.innerHTML = `
+                            <div class="success">
+                                <h3>✅ Arama Başarılı!</h3>
+                                <p><strong>${result.data.products.length}</strong> ürün bulundu</p>
+                                <p><em>${result.message}</em></p>
+                                ${result.data.products.map(product => `
+                                    <div style="border: 1px solid #ccc; margin: 15px 0; padding: 15px; border-radius: 4px; background-color: white;">
+                                        <h4>📦 ${product.product_name}</h4>
+                                        <p><strong>Ürün Kodu:</strong> ${product.product_code}</p>
+                                        <p><strong>Marka:</strong> ${product.brand || 'Belirtilmemiş'}</p>
+                                        <p><strong>Kategori:</strong> ${product.category}</p>
+                                        <p><strong>Şirket:</strong> ${product.company_name}</p>
+                                        <p><strong>Barkod:</strong> ${product.barcode || 'Belirtilmemiş'}</p>
+                                        ${product.product_images && product.product_images.length > 0 ? 
+                                            `<p><strong>Resim:</strong> <img src="${product.product_images[0]}" alt="${product.product_name}" style="max-width: 100px; max-height: 100px;"></p>` : 
+                                            '<p><strong>Resim:</strong> Yok</p>'}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `;
+                    } else {
+                        resultDiv.innerHTML = `
+                            <div class="info">
+                                <h3>ℹ️ Sonuç Bulunamadı</h3>
+                                <p>${result.message}</p>
+                                <p><strong>💡 İpucu:</strong> Farklı bir arama terimi deneyin veya tüm ürünleri görmek için formu boş bırakın.</p>
+                            </div>
+                        `;
+                    }
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="error">
+                            <h3>❌ Hata Oluştu</h3>
+                            <p>${result.message}</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                const resultDiv = document.getElementById('search-result');
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <h3>❌ Hata Oluştu</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        });
+        
+        // All products button
+        document.getElementById('all-products-btn').addEventListener('click', function() {
+            // Clear all fields and submit
+            document.getElementById('product-code').value = '';
+            document.getElementById('barcode').value = '';
+            document.getElementById('search-text').value = '';
+            document.getElementById('test-search-form').dispatchEvent(new Event('submit'));
+        });
+        
+        // Clear button functionality
+        document.getElementById('clear-btn').addEventListener('click', function() {
+            document.getElementById('product-code').value = '';
+            document.getElementById('barcode').value = '';
+            document.getElementById('search-text').value = '';
+            document.getElementById('search-result').style.display = 'none';
+        });
+        
+        // Add input validation
+        document.getElementById('product-code').addEventListener('input', function(e) {
+            // Allow only uppercase letters, numbers, and dash
+            e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9-]/g, '');
+        });
+        
+        document.getElementById('barcode').addEventListener('input', function(e) {
+            // Allow only numbers
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+        });
+    </script>
+</body>
+</html>
